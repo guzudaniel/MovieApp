@@ -35,8 +35,7 @@ namespace MovieApplication.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
-                .FirstOrDefaultAsync(m => m.id == id);
+            Movie movie = movies.Find(m => m.id == id);
             if (movie == null)
             {
                 return NotFound();
@@ -63,7 +62,7 @@ namespace MovieApplication.Controllers
                 movie.id = Guid.NewGuid();
 
                 movies.Add(movie);
-           
+
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
@@ -77,7 +76,7 @@ namespace MovieApplication.Controllers
                 return NotFound();
             }
 
-            var movie = movies.FirstOrDefault(x => x.id == id);
+            Movie movie = movies.FirstOrDefault(x => x.id == id);
             if (movie == null)
             {
                 return NotFound();
@@ -90,16 +89,16 @@ namespace MovieApplication.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("id,name,type,year")] Movie movie)
+        public async Task<IActionResult> Edit(Guid id, [FromForm] Movie movie)
         {
-            if (id != movie.id)
+            if (id != movie.id) 
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                var currentMovie = movies.FirstOrDefault(x => x.id == id);
+                Movie currentMovie = movies.FirstOrDefault(x => x.id == id);
                 currentMovie.name = movie.name;
                 currentMovie.type = movie.type;
                 currentMovie.year = movie.year;
@@ -116,8 +115,7 @@ namespace MovieApplication.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
-                .FirstOrDefaultAsync(m => m.id == id);
+            Movie movie = movies.Find(m => m.id == id);
             if (movie == null)
             {
                 return NotFound();
@@ -131,9 +129,8 @@ namespace MovieApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var movie = await _context.Movie.FindAsync(id);
-            _context.Movie.Remove(movie);
-            await _context.SaveChangesAsync();
+            Movie movie = movies.Find(m => m.id == id);
+            movies.Remove(movie);
             return RedirectToAction(nameof(Index));
         }
 

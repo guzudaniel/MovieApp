@@ -7,10 +7,12 @@ namespace MovieApplication.Models
 {
     public class Movie
     {
-
         public Guid id { get; set; }
+
         public string name { get; set; }
+
         public string type { get; set; }
+
         public int year { get; set; }
     }
 }
